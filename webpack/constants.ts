@@ -2,12 +2,10 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import lessToJs from 'less-vars-to-js';
 import path from 'path';
-import { ENV } from './typings';
 
-export const env = (dotenv.config({ path: path.resolve(__dirname, '../.env') })
-	.parsed as any) as ENV;
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-const DEV_ENV = env.NODE_ENV === 'development';
+const DEV_ENV = process.env.NODE_ENV === 'development';
 const compilerOptions = { sourceMap: false };
 
 export const extensions = ['.js', '.ts', '.tsx'];

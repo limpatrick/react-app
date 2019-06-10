@@ -6,7 +6,6 @@ import webpack from 'webpack';
 import {
 	cssLoaderOptions,
 	distPath,
-	env,
 	extensions,
 	extractCssChunksOptions,
 	lessLoaderOptions,
@@ -17,7 +16,7 @@ import {
 
 const config: webpack.Configuration = {
 	entry: ['normalize.css/normalize.css', path.resolve(__dirname, '../src/index.tsx')],
-	mode: env.NODE_ENV,
+	mode: process.env.NODE_ENV as webpack.Configuration['mode'],
 	module: {
 		rules: [
 			{

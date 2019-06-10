@@ -1,7 +1,8 @@
+import { toNumber } from 'lodash';
 import path from 'path';
 import webpack from 'webpack';
 import merge from 'webpack-merge';
-import { env, publicPath } from './constants';
+import { publicPath } from './constants';
 import common from './webpack.common';
 
 const config: webpack.Configuration = {
@@ -10,12 +11,12 @@ const config: webpack.Configuration = {
 		contentBase: path.resolve(__dirname, '../public'),
 		disableHostCheck: false,
 		historyApiFallback: { disableDotRule: true },
-		host: env.HOST,
+		host: process.env.HOST,
 		hot: true,
 		https: false,
 		inline: true,
 		overlay: true,
-		port: env.PORT,
+		port: toNumber(process.env.PORT),
 		public: 'localhost',
 		publicPath,
 		watchContentBase: true
