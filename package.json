@@ -6,9 +6,9 @@
 	"repository": "https://github.com/limpatrick/react-app.git",
 	"license": "MIT",
 	"scripts": {
-		"prestart": "tsc --lib es6 --esModuleInterop webpack/webpack.dev.ts",
+		"prestart": "tsc --esModuleInterop webpack/webpack.dev.ts",
 		"start": "webpack-dev-server --config webpack/webpack.dev.js",
-		"prebuild": "tsc --lib es6 --esModuleInterop webpack/webpack.prod.ts",
+		"prebuild": "tsc --esModuleInterop webpack/webpack.prod.ts",
 		"build": "npm run prebuild && webpack --mode production --config webpack/webpack.prod.js --progress"
 	},
 	"dependencies": {
@@ -31,7 +31,7 @@
 		"dotenv": "^8.0.0",
 		"extract-css-chunks-webpack-plugin": "^4.5.2",
 		"file-loader": "^4.0.0",
-		"html-webpack-plugin": "^3.2.0",
+		"html-webpack-plugin": "^4.0.0-beta.5",
 		"less": "^3.9.0",
 		"less-loader": "^5.0.0",
 		"less-vars-to-js": "^1.3.0",
