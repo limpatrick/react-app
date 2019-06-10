@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
-// @ts-ignore
-import lessToJs from 'less-vars-to-js';
 import fs from 'fs';
+import lessToJs from 'less-vars-to-js';
 import path from 'path';
 import { ENV } from './typings';
 

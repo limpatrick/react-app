@@ -1,8 +1,8 @@
-import common from './webpack.common';
-import merge from 'webpack-merge';
 import path from 'path';
 import webpack from 'webpack';
+import merge from 'webpack-merge';
 import { env, publicPath } from './constants';
+import common from './webpack.common';
 
 const config: webpack.Configuration = {
 	devServer: {

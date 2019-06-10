@@ -1,4 +1,3 @@
-// @ts-ignore
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import path from 'path';
@@ -13,7 +12,7 @@ import {
 	lessLoaderOptions,
 	publicPath,
 	tsconfig,
-  tsLoaderOptions
+	tsLoaderOptions
 } from './constants';
 
 const config: webpack.Configuration = {
@@ -44,7 +43,7 @@ const config: webpack.Configuration = {
 			{
 				test: /\.css$/,
 				use: [
-          { loader: ExtractCssChunks.loader },
+					{ loader: ExtractCssChunks.loader },
 					{ loader: 'css-loader', options: cssLoaderOptions }
 				]
 			},
