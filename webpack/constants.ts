@@ -6,7 +6,6 @@ import path from 'path';
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const DEV_ENV = process.env.NODE_ENV === 'development';
-const compilerOptions = { sourceMap: false };
 
 export const extensions = ['.js', '.ts', '.tsx'];
 export const distPath = path.resolve(__dirname, '../dist');
@@ -14,7 +13,7 @@ export const publicPath = '/';
 export const tsconfig = path.resolve(__dirname, '../tsconfig.json');
 export const tsLoaderOptions = {
 	configFile: tsconfig,
-	compilerOptions: DEV_ENV ? compilerOptions : {}
+	compilerOptions: { sourceMap: DEV_ENV }
 };
 export const extractCssChunksOptions = {
 	chunkFilename: 'static/css/[name].[id].[chunkhash:8].chunk.css',

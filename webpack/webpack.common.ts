@@ -14,6 +14,8 @@ import {
 	tsLoaderOptions
 } from './constants';
 
+delete process.env.TS_NODE_PROJECT;
+
 const config: webpack.Configuration = {
 	entry: ['normalize.css/normalize.css', path.resolve(__dirname, '../src/index.tsx')],
 	mode: process.env.NODE_ENV as webpack.Configuration['mode'],

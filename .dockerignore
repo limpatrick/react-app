@@ -11,4 +11,3 @@ Makefile
 node_modules
 README.md
 VERSION
-webpack/*.js
