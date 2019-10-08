@@ -1,6 +1,7 @@
 import { toNumber } from 'lodash';
 import path from 'path';
 import webpack from 'webpack';
+import 'webpack-dev-server';
 import merge from 'webpack-merge';
 import { publicPath } from './constants';
 import common from './webpack.common';
