@@ -24,7 +24,7 @@ const config: webpack.Configuration = {
 	plugins: [
 		new CleanWebpackPlugin({
 			verbose: true
-		})
+		}) as any
 	]
 };
 
