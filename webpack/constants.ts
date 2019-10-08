@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import lessToJs from 'less-vars-to-js';
 import path from 'path';
+import tsImportPluginFactory from 'ts-import-plugin';
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
@@ -13,7 +14,10 @@ export const publicPath = '/';
 export const tsconfig = path.resolve(__dirname, '../tsconfig.json');
 export const tsLoaderOptions = {
 	configFile: tsconfig,
-	compilerOptions: { sourceMap: DEV_ENV }
+	compilerOptions: { sourceMap: DEV_ENV },
+	getCustomTransformers: () => ({
+		before: [tsImportPluginFactory({ libraryDirectory: 'lib', libraryName: 'antd', style: true })]
+	})
 };
 export const extractCssChunksOptions = {
 	chunkFilename: 'static/css/[name].[id].[chunkhash:8].chunk.css',

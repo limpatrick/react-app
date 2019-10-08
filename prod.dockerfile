@@ -8,6 +8,6 @@ RUN yarn global add http-server
 COPY . /app
 RUN yarn build
 
-EXPOSE 80
+EXPOSE 94
 
-CMD ["http-server", "./dist/", "-p", "80"]
+CMD ["http-server", "./dist/", "-p", "94"]

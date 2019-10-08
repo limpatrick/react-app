@@ -13,9 +13,10 @@
 		"noUnusedLocals": true,
 		"outDir": "./dist/",
 		"paths": {
-			"*": ["node_modules/*", "src/types/*"],
+			"*": ["node_modules/*", "src/types/modules/*"],
 			"~/*": ["src/*"]
 		},
+		"resolveJsonModule": true,
 		"sourceMap": true,
 		"strictFunctionTypes": true,
 		"strictNullChecks": true,
