@@ -1,14 +1,17 @@
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import path from 'path';
-import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
 import webpack from 'webpack';
 import merge from 'webpack-merge';
 import common from './webpack.common';
 
 const config: webpack.Configuration = {
 	optimization: {
-		minimizer: [new UglifyJsPlugin({ parallel: true }), new OptimizeCSSAssetsPlugin()],
+		minimizer: [
+			new TerserPlugin({ parallel: true, terserOptions: { ecma: 6 } }),
+			new OptimizeCSSAssetsPlugin()
+		],
 		splitChunks: {
 			chunks: 'all'
 		}
