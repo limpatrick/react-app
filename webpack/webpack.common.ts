@@ -72,7 +72,11 @@ const config: webpack.Configuration = {
 			favicon: path.resolve(__dirname, '../public/favicon.ico'),
 			template: path.resolve(__dirname, '../public/index.html')
 		}),
-		new ExtractCssChunks(extractCssChunksOptions)
+		new ExtractCssChunks(extractCssChunksOptions),
+		new webpack.DefinePlugin({
+			// make __THEME__ available (less to var js)
+			__THEME__: JSON.stringify(lessLoaderOptions.modifyVars)
+		})
 	],
 	resolve: {
 		extensions,
