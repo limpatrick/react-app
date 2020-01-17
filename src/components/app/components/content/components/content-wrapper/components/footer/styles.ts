@@ -1,4 +1,6 @@
-export default {
+import { createUseStyles } from 'react-jss';
+
+export default createUseStyles({
 	root: {
 		backgroundColor: 'transparent',
 		textAlign: 'center',
@@ -8,4 +10,4 @@ export default {
 			fontWeight: 300
 		}
 	}
-};
+});

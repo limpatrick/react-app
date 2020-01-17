@@ -1,11 +1,13 @@
+import { createUseStyles } from 'react-jss';
 import theme from '~/utils/theme';
 
 const activeLink = {
 	border: `1px solid ${theme['@primary-color']}`
 };
 
-export default {
+export default createUseStyles({
 	root: {
+		height: 33,
 		'& *': {
 			lineHeight: '2rem',
 			fontSize: '0.9rem',
@@ -46,4 +48,4 @@ export default {
 		}
 	},
 	activeLink: {}
-};
+});

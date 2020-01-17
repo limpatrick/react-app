@@ -1,29 +1,55 @@
+import React, { useState, ComponentProps } from 'react';
+import { connect } from 'react-redux';
 import { Button, Input } from 'antd';
-import React, { ComponentProps } from 'react';
-import injectSheet, { WithSheet } from 'react-jss';
-import styles from './styles';
+import { trim } from 'ramda';
+import rootActions from '~/store/root-actions';
+import { RootState } from '~/store/root-reducer';
+import rootSelectors from '~/store/root-selectors';
+import useStyles from './styles';
 
-type Props = {
-	value: string;
-	onClickAll: () => void;
-	onChange: ComponentProps<typeof Input>['onChange'];
-	onPressEnter: ComponentProps<typeof Input>['onPressEnter'];
-} & WithSheet<typeof styles, {}>;
+const mapStateToProps = (state: RootState) => ({
+	todosIds: rootSelectors.todos.getCurrentTodosIds(state)
+});
 
-const Header = React.memo<Props>(({ classes, onClickAll, onChange, onPressEnter, value }) => (
-	<div className={classes.root}>
-		<div className={classes.buttonWrapper}>
-			<Button type="link" shape="circle" icon="down" onClick={onClickAll} />
+const dipatchProps = { add: rootActions.todos.add, toggle: rootActions.todos.toggle };
+
+type Props = ReturnType<typeof mapStateToProps> & typeof dipatchProps;
+
+const Header = ({ add, toggle, todosIds }: Props) => {
+	const [text, setText] = useState('');
+	const classes = useStyles();
+
+	const handleClick = () => {
+		toggle(todosIds);
+	};
+	const handleChange: ComponentProps<typeof Input>['onChange'] = ({ target: { value } }) => {
+		setText(value);
+	};
+	const handlePressEnter = () => {
+		const value = trim(text);
+
+		setText('');
+
+		if (value.length) add(value, true);
+	};
+
+	return (
+		<div className={classes.root}>
+			<div className={classes.buttonWrapper}>
+				{todosIds.length > 0 && (
+					<Button type="link" shape="circle" icon="down" onClick={handleClick} />
+				)}
+			</div>
+			<div className={classes.inputWrapper}>
+				<Input
+					placeholder="Add a todo"
+					onChange={handleChange}
+					onPressEnter={handlePressEnter}
+					value={text}
+				/>
+			</div>
 		</div>
-		<div className={classes.inputWrapper}>
-			<Input
-				placeholder="Add a todo"
-				onChange={onChange}
-				onPressEnter={onPressEnter}
-				value={value}
-			/>
-		</div>
-	</div>
-));
+	);
+};
 
-export default injectSheet(styles)(Header);
+export default connect(mapStateToProps, dipatchProps)(Header);

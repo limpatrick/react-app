@@ -1,35 +1,45 @@
-import { Table } from 'antd';
 import React from 'react';
-import injectSheet, { WithSheet } from 'react-jss';
-import { Todo } from '~/types/todo';
-import DeleteButton from './components/delete-button';
-import Footer from './components/footer';
+import { connect } from 'react-redux';
+import { Table } from 'antd';
+import { RootState } from '~/store/root-reducer';
+import rootSelectors from '~/store/root-selectors';
 import Header from './components/header';
+import Footer from './components/footer';
 import StatusButton from './components/status-button';
 import Text from './components/text';
-import styles from './styles';
+import DeleteButton from './components/delete-button';
+import useStyles from './styles';
 
-type Props = { todos: Todo[] } & WithSheet<typeof styles, {}>;
+const mapStateToProps = (state: RootState) => ({
+	allTodosIds: rootSelectors.todos.getAllTodosIds(state),
+	todos: rootSelectors.todos.getCurrentTodos(state)
+});
 
-const Todos = React.memo<Props>(({ classes, todos }) => (
-	<Table
-		className={classes.root}
-		dataSource={todos}
-		rowKey="id"
-		title={() => <Header />}
-		showHeader={false}
-		pagination={false}
-		locale={{ emptyText: 'No todo' }}
-		footer={() => <Footer />}
-	>
-		<Table.Column key="status" render={todo => <StatusButton todo={todo} />} width={64} />
-		<Table.Column key="text" render={todo => <Text todo={todo} />} />
-		<Table.Column
-			key="delete"
-			render={todo => <DeleteButton className={classes.deleteBtn} todo={todo} />}
-			width={64}
-		/>
-	</Table>
-));
+type Props = ReturnType<typeof mapStateToProps>;
 
-export default injectSheet(styles)(Todos);
+const Todos = ({ allTodosIds, todos }: Props) => {
+	const classes = useStyles({ allTodosIds, todos });
+
+	return (
+		<Table
+			className={classes.root}
+			dataSource={todos}
+			rowKey="id"
+			title={() => <Header />}
+			showHeader={false}
+			pagination={false}
+			locale={{ emptyText: 'No todos' }}
+			footer={() => <Footer />}
+		>
+			<Table.Column key="status" render={todo => <StatusButton todo={todo} />} width={64} />
+			<Table.Column key="text" render={todo => <Text todo={todo} />} />
+			<Table.Column
+				key="delete"
+				render={todo => <DeleteButton className={classes.deleteBtn} todo={todo} />}
+				width={64}
+			/>
+		</Table>
+	);
+};
+
+export default connect(mapStateToProps)(Todos);

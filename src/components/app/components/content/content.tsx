@@ -1,15 +1,15 @@
+import React, { ComponentType } from 'react';
 import { map } from 'ramda';
-import React from 'react';
 import { Route, Switch } from 'react-router';
-import { Route as IRoute } from '~/types/route';
+import { Route as RouteType } from '~/models/route';
 import ContentWrapper from './components/content-wrapper';
 
-type Props = { routes: IRoute[] };
+type Props = { routes: RouteType[] };
 
-const Content = React.memo<Props>(({ routes }) => (
+const Content = ({ routes }: Props) => (
 	<Switch>
 		{map(({ footer, fullHeight, component, ...route }) => {
-			const Component = component as React.ComponentType;
+			const Component = component as ComponentType;
 
 			return (
 				<Route
@@ -23,6 +23,6 @@ const Content = React.memo<Props>(({ routes }) => (
 			);
 		}, routes)}
 	</Switch>
-));
+);
 
 export default Content;

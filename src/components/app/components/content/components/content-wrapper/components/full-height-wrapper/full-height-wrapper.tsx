@@ -1,13 +1,16 @@
 import React, { ReactNode } from 'react';
-import injectSheet, { WithSheet } from 'react-jss';
-import styles from './styles';
+import useStyles from './styles';
 
-type Props = { children: ReactNode } & WithSheet<typeof styles, {}>;
+type Props = { children: ReactNode };
 
-const FullHeightWrapper = React.memo<Props>(({ classes, children }) => (
-	<div className={classes.root}>
-		<div className={classes.wrapper}>{children}</div>
-	</div>
-));
+const FullHeightWrapper = ({ children }: Props) => {
+	const classes = useStyles();
 
-export default injectSheet(styles)(FullHeightWrapper);
+	return (
+		<div className={classes.root}>
+			<div className={classes.wrapper}>{children}</div>
+		</div>
+	);
+};
+
+export default FullHeightWrapper;

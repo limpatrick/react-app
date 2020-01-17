@@ -1,35 +1,31 @@
+import React from 'react';
+import { connect } from 'react-redux';
 import { faCheckCircle, faCircle } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from 'antd';
-import React from 'react';
-import injectSheet, { WithSheet } from 'react-jss';
-import { withTodosConsumer, WithTodosConsumer } from '~/hoc/with-consumer';
-import { Todo } from '~/types/todo';
-import styles from './styles';
+import rootActions from '~/store/root-actions';
+import { Todo, TodoStatus } from '~/store/features/todos/models';
+import useStyles from './styles';
 
-type Props = { todo: Todo } & WithTodosConsumer & WithSheet<typeof styles, {}>;
+const dispatchProps = { toggle: rootActions.todos.toggle };
 
-const StatusButton = React.memo<Props>(
-	({
-		todo: { id, status },
-		context: {
-			todos: { toggleTodosStatus }
-		},
-		classes
-	}) => (
-		<Button
-			className={classes.root}
-			type="link"
-			shape="circle"
-			onClick={() => toggleTodosStatus([id])}
-		>
-			{status === 'completed' ? (
+type Props = typeof dispatchProps & { todo: Todo };
+
+const StatusButton = ({ todo: { id, status }, toggle }: Props) => {
+	const classes = useStyles();
+	const handleClick = () => {
+		toggle([id]);
+	};
+
+	return (
+		<Button className={classes.root} type="link" shape="circle" onClick={handleClick}>
+			{status === TodoStatus.Completed ? (
 				<FontAwesomeIcon icon={faCheckCircle} />
 			) : (
 				<FontAwesomeIcon icon={faCircle} />
 			)}
 		</Button>
-	)
-);
+	);
+};
 
-export default withTodosConsumer(injectSheet(styles)(StatusButton));
+export default connect(null, dispatchProps)(StatusButton);

@@ -1,1 +1,1 @@
-export { default } from './link-button.container';
+export { default } from './link-button';

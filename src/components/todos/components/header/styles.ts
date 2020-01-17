@@ -1,8 +1,10 @@
+import { createUseStyles } from 'react-jss';
+
 const border = { border: 'none !important' };
 const boxShadow = { boxShadow: 'none' };
 const pseudoClass = { ...border, ...boxShadow };
 
-export default {
+export default createUseStyles({
 	root: { display: 'flex', '& > *': { padding: '0 16px' } },
 	buttonWrapper: { width: 64 },
 	inputWrapper: {
@@ -20,10 +22,8 @@ export default {
 				fontStyle: 'italic',
 				fontWeight: 300,
 				color: '#e6e6e6',
-				padding: {
-					left: 2
-				}
+				paddingLeft: 2
 			}
 		}
 	}
-};
+});

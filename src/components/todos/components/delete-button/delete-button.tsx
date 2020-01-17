@@ -1,30 +1,31 @@
+import React from 'react';
+import { connect } from 'react-redux';
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from 'antd';
 import classNames from 'classnames';
-import React from 'react';
-import { withTodosConsumer, WithTodosConsumer } from '~/hoc/with-consumer';
-import { Todo } from '~/types/todo';
+import { Todo } from '~/store/features/todos/models';
+import rootActions from '~/store/root-actions';
 
-type Props = { className?: string; todo: Todo } & WithTodosConsumer;
+const dispatchProps = { deleteByIds: rootActions.todos.deleteByIds };
 
-const DeleteButton = React.memo<Props>(
-	({
-		className = '',
-		context: {
-			todos: { deleteTodos }
-		},
-		todo: { id }
-	}) => (
+type Props = typeof dispatchProps & { className?: string; todo: Todo };
+
+const DeleteButton = ({ className = '', deleteByIds, todo: { id } }: Props) => {
+	const handleClick = () => {
+		deleteByIds([id]);
+	};
+
+	return (
 		<Button
 			className={classNames({ [className]: !!className })}
 			type="link"
 			shape="circle"
-			onClick={() => deleteTodos([id])}
+			onClick={handleClick}
 		>
 			<FontAwesomeIcon icon={faTimesCircle} />
 		</Button>
-	)
-);
+	);
+};
 
-export default withTodosConsumer(DeleteButton);
+export default connect(null, dispatchProps)(DeleteButton);

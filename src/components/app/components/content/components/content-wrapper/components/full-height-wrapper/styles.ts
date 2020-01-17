@@ -1,4 +1,6 @@
-export default {
+import { createUseStyles } from 'react-jss';
+
+export default createUseStyles({
 	root: {
 		flex: 1,
 		display: 'flex',
@@ -7,4 +9,4 @@ export default {
 	wrapper: {
 		flex: 1
 	}
-};
+});

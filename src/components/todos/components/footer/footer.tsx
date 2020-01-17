@@ -1,69 +1,61 @@
-import { Button, Col, Row } from 'antd';
-import classNames from 'classnames';
-import { filter, length, map, prop, propEq } from 'ramda';
 import React from 'react';
-import injectSheet, { WithSheet } from 'react-jss';
+import { Button, Col, Row } from 'antd';
+import { connect } from 'react-redux';
+import classNames from 'classnames';
+import { map } from 'ramda';
 import LinkButton from '~/components/link-button';
-import { withTodosConsumer, WithTodosConsumer } from '~/hoc/with-consumer';
-import { Todo } from '~/types/todo';
-import styles from './styles';
+import { RootState } from '~/store/root-reducer';
+import rootSelectors from '~/store/root-selectors';
+import rootActions from '~/store/root-actions';
+import { links } from '~/routes';
+import useStyles from './styles';
 
-type Props = WithTodosConsumer & WithSheet<typeof styles, {}>;
+const mapStateToProps = (state: RootState) => ({
+	activeTodosIds: rootSelectors.todos.getActiveTodosIds(state),
+	completedTodosIds: rootSelectors.todos.getCompletedTodosIds(state),
+	status: rootSelectors.router.getPathnameStatus(state)
+});
 
-const mapToText = (todos: Todo[]) => {
-	const todosLength = length(todos);
+const dispatchProps = { deleteByIds: rootActions.todos.deleteByIds };
 
-	return `${todosLength} item${todosLength > 1 ? 's' : ''} left`;
+type Props = ReturnType<typeof mapStateToProps> & typeof dispatchProps;
+
+const Footer = ({ activeTodosIds, completedTodosIds, status, deleteByIds }: Props) => {
+	const classes = useStyles();
+	const handleClick = () => {
+		deleteByIds(completedTodosIds);
+	};
+
+	return (
+		<Row className={classes.root}>
+			<Col xs={24} sm={5}>
+				{`${activeTodosIds.length} item${activeTodosIds.length > 1 ? 's' : ''} left`}
+			</Col>
+			<Col xs={24} sm={14}>
+				{map(
+					({ pathname, status: s, name }) => (
+						<LinkButton
+							to={pathname}
+							key={pathname}
+							className={classNames({ [classes.activeLink]: status === s })}
+							type="primary"
+							ghost
+						>
+							{name}
+						</LinkButton>
+					),
+					links
+				)}
+			</Col>
+			<Col xs={24} sm={5}>
+				{completedTodosIds.length > 0 && (
+					<Button type="link" onClick={handleClick}>
+						Clear completed
+					</Button>
+				)}
+			</Col>
+		</Row>
+	);
 };
 
-const links = [
-	{ pathname: '/', status: 'all', name: 'All' },
-	{ pathname: '/active', status: 'active', name: 'Active' },
-	{ pathname: '/completed', status: 'completed', name: 'Completed' }
-];
-
-const Footer = React.memo<Props>(
-	({
-		classes,
-		context: {
-			todos: { todos, status: currentStatus, deleteTodos }
-		}
-	}) => {
-		const activeTodos = filter(propEq('status', 'active'), todos);
-		const completedTodos = filter(propEq('status', 'completed'), todos);
-		const completedTodosLength = length(completedTodos);
-
-		return (
-			<Row className={classes.root}>
-				<Col xs={24} sm={5}>
-					{mapToText(activeTodos)}
-				</Col>
-				<Col xs={24} sm={14}>
-					{map(
-						({ pathname, status, name }) => (
-							<LinkButton
-								to={pathname}
-								key={pathname}
-								className={classNames({ [classes.activeLink]: currentStatus === status })}
-								type="primary"
-								ghost
-							>
-								{name}
-							</LinkButton>
-						),
-						links
-					)}
-				</Col>
-				<Col xs={24} sm={5}>
-					{completedTodosLength > 0 && (
-						<Button type="link" onClick={() => deleteTodos(map(prop('id'), completedTodos))}>
-							Clear completed
-						</Button>
-					)}
-				</Col>
-			</Row>
-		);
-	}
-);
-
-export default withTodosConsumer(injectSheet(styles)(Footer));
+export default connect(mapStateToProps, dispatchProps)(Footer);

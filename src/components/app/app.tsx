@@ -1,18 +1,19 @@
-import { Layout } from 'antd';
 import React from 'react';
-import injectSheet, { WithSheet } from 'react-jss';
-import routes from '~/routes';
-import Content from './components/content';
+import { Layout } from 'antd';
 import Header from './components/header';
-import styles from './styles';
+import Content from './components/content';
+import routes from '~/routes';
+import useStyles from './styles';
 
-type Props = WithSheet<typeof styles, {}>;
+const App = () => {
+	const classes = useStyles();
 
-const App = React.memo<Props>(({ classes }) => (
-	<Layout className={classes.root}>
-		<Header />
-		<Content routes={routes} />
-	</Layout>
-));
+	return (
+		<Layout className={classes.root}>
+			<Header />
+			<Content routes={routes} />
+		</Layout>
+	);
+};
 
-export default injectSheet(styles)(App);
+export default App;

@@ -1,4 +1,6 @@
-export default {
+import { createUseStyles } from 'react-jss';
+
+export default createUseStyles({
 	root: {
 		background: 'transparent',
 		height: 125,
@@ -13,4 +15,4 @@ export default {
 			}
 		}
 	}
-};
+});
