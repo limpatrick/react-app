@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Table } from 'antd';
+import { replace } from 'connected-react-router';
 import { RootState } from '~/store/root-reducer';
 import rootSelectors from '~/store/root-selectors';
 import Header from './components/header';
@@ -12,13 +13,21 @@ import useStyles from './styles';
 
 const mapStateToProps = (state: RootState) => ({
 	allTodosIds: rootSelectors.todos.getAllTodosIds(state),
-	todos: rootSelectors.todos.getCurrentTodos(state)
+	todos: rootSelectors.todos.getCurrentTodos(state),
+	pathname: rootSelectors.router.getPathnameStatus(state)
 });
 
-type Props = ReturnType<typeof mapStateToProps>;
+const dispatchProps = { redirect: replace };
 
-const Todos = ({ allTodosIds, todos }: Props) => {
+type Props = ReturnType<typeof mapStateToProps> & typeof dispatchProps;
+
+const Todos = ({ allTodosIds, pathname, todos, redirect }: Props) => {
 	const classes = useStyles({ allTodosIds, todos });
+
+	useEffect(() => {
+		if ((pathname === 'active' || pathname === 'completed') && allTodosIds.length === 0)
+			redirect('/');
+	}, [pathname, allTodosIds]);
 
 	return (
 		<Table
@@ -42,4 +51,4 @@ const Todos = ({ allTodosIds, todos }: Props) => {
 	);
 };
 
-export default connect(mapStateToProps)(Todos);
+export default connect(mapStateToProps, dispatchProps)(Todos);
