@@ -10,7 +10,7 @@
 		"build": "cross-env TS_NODE_PROJECT=\"webpack/tsconfig.json\" webpack --mode production --config webpack/webpack.prod.ts --progress"
 	},
 	"dependencies": {
-		"lodash": "^4.17.15",
+		"lodash": "^4.17.21",
 		"normalize.css": "^8.0.1",
 		"react": "^16.8.6",
 		"react-dom": "^16.8.6"
